@@ -311,6 +311,12 @@ module Make(O : OBJ)(EVP : EVALPATH with type valu = O.t) = struct
                 Oval_array []
 
           | Tconstr(path, [], _)
+              when Path.same path Predef.path_floatarray ->
+                let a : floatarray = O.obj obj in
+                Oval_floatarray
+                  (a |> Float.Array.to_list |> List.map (fun x -> Oval_float x))
+
+          | Tconstr(path, [], _)
               when Path.same path Predef.path_string ->
             Oval_string ((O.obj obj : string), !printer_steps, Ostr_string)
 
