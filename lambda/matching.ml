@@ -1777,7 +1777,7 @@ let get_expr_args_constr ~scopes head (arg, _mut) rem =
     | Cstr_constant _
     | Cstr_block _ ->
         make_field_accesses Alias 0 (cstr.cstr_arity - 1) rem
-    | Cstr_unboxed -> (arg, Alias) :: rem
+    | Cstr_unboxed _-> (arg, Alias) :: rem
     | Cstr_extension _ -> make_field_accesses Alias 1 cstr.cstr_arity rem
 
 let divide_constructor ~scopes ctx pm =
@@ -2742,7 +2742,7 @@ let split_cases tag_lambda_list =
         match cstr_tag with
         | Cstr_constant n -> ((n, act) :: consts, nonconsts)
         | Cstr_block n -> (consts, (n, act) :: nonconsts)
-        | Cstr_unboxed -> (consts, (0, act) :: nonconsts)
+        | Cstr_unboxed _ -> (consts, (0, act) :: nonconsts) (* TODO *)
         | Cstr_extension _ -> assert false
       )
   in

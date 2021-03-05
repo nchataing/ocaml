@@ -95,11 +95,16 @@ let constructor_args ~current_unit priv cd_args cd_res path rep =
 
 let constructor_descrs ~current_unit ty_path decl cstrs rep =
   let ty_res = newgenconstr ty_path decl.type_params in
-  let num_consts = ref 0 and num_nonconsts = ref 0  and num_normal = ref 0 in
+  let num_consts = ref 0 and num_nonconsts = ref 0 in
+  let num_normal = ref 0 and num_unboxed = ref 0 in
   List.iter
-    (fun {cd_args; cd_res; _} ->
-      if cd_args = Cstr_tuple [] then incr num_consts else incr num_nonconsts;
-      if cd_res = None then incr num_normal)
+    (fun {cd_args; cd_res; cd_attributes; _} ->
+      if Builtin_attributes.has_unboxed cd_attributes then
+        incr num_unboxed
+      else begin
+        if cd_args = Cstr_tuple [] then incr num_consts else incr num_nonconsts;
+        if cd_res = None then incr num_normal
+      end)
     cstrs;
   let rec describe_constructors idx_const idx_nonconst = function
       [] -> []
@@ -110,16 +115,16 @@ let constructor_descrs ~current_unit ty_path decl cstrs rep =
           | None -> ty_res
         in
         let (tag, descr_rem) =
-          match cd_args, rep with
-          | _, Variant_unboxed ->
-            assert (rem = []);
-            (Cstr_unboxed, [])
-          | Cstr_tuple [], Variant_regular ->
-             (Cstr_constant idx_const,
-              describe_constructors (idx_const+1) idx_nonconst rem)
-          | _, Variant_regular  ->
-             (Cstr_block idx_nonconst,
-              describe_constructors idx_const (idx_nonconst+1) rem) in
+          match cd_args with
+          | Cstr_tuple [ty] when Builtin_attributes.has_unboxed cd_attributes ->
+              (Cstr_unboxed (Semi_thunk.make ty),
+               describe_constructors idx_const idx_nonconst rem)
+          (* TODO : add case for single field inlined record *)
+          (* | Cstr_record [{ld_type; _}] -> ld_type *)
+          | Cstr_tuple [] -> (Cstr_constant idx_const,
+                   describe_constructors (idx_const+1) idx_nonconst rem)
+          | _  -> (Cstr_block idx_nonconst,
+                   describe_constructors idx_const (idx_nonconst+1) rem) in
         let cstr_name = Ident.name cd_id in
         let existentials, cstr_args, cstr_inlined =
           let representation =
@@ -140,6 +145,7 @@ let constructor_descrs ~current_unit ty_path decl cstrs rep =
             cstr_consts = !num_consts;
             cstr_nonconsts = !num_nonconsts;
             cstr_normal = !num_normal;
+            cstr_unboxed = !num_unboxed;
             cstr_private = decl.type_private;
             cstr_generalized = cd_res <> None;
             cstr_loc = cd_loc;
@@ -170,6 +176,7 @@ let extension_descr ~current_unit path_ext ext =
       cstr_nonconsts = -1;
       cstr_private = ext.ext_private;
       cstr_normal = -1;
+      cstr_unboxed = -1;
       cstr_generalized = ext.ext_ret_type <> None;
       cstr_loc = ext.ext_loc;
       cstr_attributes = ext.ext_attributes;
@@ -221,7 +228,8 @@ let rec find_constr tag num_const num_nonconst = function
       then c
       else find_constr tag (num_const + 1) num_nonconst rem
   | c :: rem ->
-      if tag = Cstr_block num_nonconst || tag = Cstr_unboxed
+      if tag = Cstr_block num_nonconst (* || tag = Cstr_unboxed [] *)
+      (* XXX changes needed in the check above *)
       then c
       else find_constr tag num_const (num_nonconst + 1) rem
 

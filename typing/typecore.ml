@@ -4680,7 +4680,7 @@ and type_construct env loc lid sarg ty_expected_explained attrs =
     begin match constr.cstr_tag with
     | Cstr_extension _ ->
         raise(Error(loc, env, Private_constructor (constr, ty_res)))
-    | Cstr_constant _ | Cstr_block _ | Cstr_unboxed ->
+    | Cstr_constant _ | Cstr_block _ | Cstr_unboxed _ ->
         raise (Error(loc, env, Private_type ty_res));
     end;
   (* NOTE: shouldn't we call "re" on this final expression? -- AF *)

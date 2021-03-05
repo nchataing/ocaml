@@ -388,7 +388,8 @@ module Make(O : OBJ)(EVP : EVALPATH with type valu = O.t) = struct
                 | {type_kind = Type_variant (constr_list,rep)} ->
                     let unbx = (rep = Variant_unboxed) in
                     let tag =
-                      if unbx then Cstr_unboxed
+                      if unbx then (* XXX unboxing Cstr_unboxed [] *)
+                        assert false
                       else if O.is_block obj
                       then Cstr_block(O.tag obj)
                       else Cstr_constant(O.obj obj) in

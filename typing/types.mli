@@ -530,7 +530,6 @@ and ext_status =
   | Text_next                      (* not first constructor in an extension *)
   | Text_exception
 
-
 (* Constructor and record label descriptions inserted held in typing
    environments *)
 
@@ -544,6 +543,7 @@ type constructor_description =
     cstr_consts: int;                   (* Number of constant constructors *)
     cstr_nonconsts: int;                (* Number of non-const constructors *)
     cstr_normal: int;                   (* Number of non generalized constrs *)
+    cstr_unboxed: int;                  (* Number of unboxed constructors *)
     cstr_generalized: bool;             (* Constrained return type? *)
     cstr_private: private_flag;         (* Read-only constructor? *)
     cstr_loc: Location.t;
@@ -555,9 +555,23 @@ type constructor_description =
 and constructor_tag =
     Cstr_constant of int                (* Constant constructor (an int) *)
   | Cstr_block of int                   (* Regular constructor (a block) *)
-  | Cstr_unboxed                        (* Constructor of an unboxed type *)
+  | Cstr_unboxed of (type_expr, head_shape) Semi_thunk.t
+                                        (* Constructor of an unboxed type *)
   | Cstr_extension of Path.t * bool     (* Extension constructor
                                            true if a constant false if a block*)
+
+and head_shape =
+  { head_imm : imm shape;
+    head_blocks : tag shape;
+  }
+
+and 'a shape =
+  (* TODO add some comment *)
+  | Shape_set of 'a list
+  | Shape_any
+
+and imm = int
+and tag = int
 
 (* Constructors are the same *)
 val equal_tag :  constructor_tag -> constructor_tag -> bool

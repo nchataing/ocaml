@@ -128,6 +128,11 @@ utils/profile.cmx : \
     utils/misc.cmx \
     utils/profile.cmi
 utils/profile.cmi :
+utils/semi_thunk.cmo : \
+    utils/semi_thunk.cmi
+utils/semi_thunk.cmx : \
+    utils/semi_thunk.cmi
+utils/semi_thunk.cmi :
 utils/strongly_connected_components.cmo : \
     utils/numbers.cmi \
     utils/misc.cmi \
@@ -541,17 +546,21 @@ typing/ctype.cmi : \
     parsing/asttypes.cmi
 typing/datarepr.cmo : \
     typing/types.cmi \
+    utils/semi_thunk.cmi \
     typing/path.cmi \
     parsing/location.cmi \
     typing/ident.cmi \
+    parsing/builtin_attributes.cmi \
     typing/btype.cmi \
     parsing/asttypes.cmi \
     typing/datarepr.cmi
 typing/datarepr.cmx : \
     typing/types.cmx \
+    utils/semi_thunk.cmx \
     typing/path.cmx \
     parsing/location.cmx \
     typing/ident.cmx \
+    parsing/builtin_attributes.cmx \
     typing/btype.cmx \
     parsing/asttypes.cmi \
     typing/datarepr.cmi
@@ -1375,6 +1384,7 @@ typing/typedecl.cmo : \
     utils/warnings.cmi \
     typing/typetexp.cmi \
     typing/types.cmi \
+    typing/typeopt.cmi \
     typing/typedtree.cmi \
     typing/typedecl_variance.cmi \
     typing/typedecl_unboxed.cmi \
@@ -1410,6 +1420,7 @@ typing/typedecl.cmx : \
     utils/warnings.cmx \
     typing/typetexp.cmx \
     typing/types.cmx \
+    typing/typeopt.cmx \
     typing/typedtree.cmx \
     typing/typedecl_variance.cmx \
     typing/typedecl_unboxed.cmx \
@@ -1682,7 +1693,8 @@ typing/typemod.cmi : \
 typing/typeopt.cmo : \
     typing/types.cmi \
     typing/typedtree.cmi \
-    typing/typedecl.cmi \
+    typing/typedecl_unboxed.cmi \
+    utils/semi_thunk.cmi \
     typing/predef.cmi \
     typing/path.cmi \
     lambda/lambda.cmi \
@@ -1695,7 +1707,8 @@ typing/typeopt.cmo : \
 typing/typeopt.cmx : \
     typing/types.cmx \
     typing/typedtree.cmx \
-    typing/typedecl.cmx \
+    typing/typedecl_unboxed.cmx \
+    utils/semi_thunk.cmx \
     typing/predef.cmx \
     typing/path.cmx \
     lambda/lambda.cmx \
@@ -1713,6 +1726,7 @@ typing/typeopt.cmi : \
     typing/env.cmi
 typing/types.cmo : \
     typing/type_immediacy.cmi \
+    utils/semi_thunk.cmi \
     typing/primitive.cmi \
     typing/path.cmi \
     parsing/parsetree.cmi \
@@ -1726,6 +1740,7 @@ typing/types.cmo : \
     typing/types.cmi
 typing/types.cmx : \
     typing/type_immediacy.cmx \
+    utils/semi_thunk.cmx \
     typing/primitive.cmx \
     typing/path.cmx \
     parsing/parsetree.cmi \
@@ -1739,6 +1754,7 @@ typing/types.cmx : \
     typing/types.cmi
 typing/types.cmi : \
     typing/type_immediacy.cmi \
+    utils/semi_thunk.cmi \
     typing/primitive.cmi \
     typing/path.cmi \
     parsing/parsetree.cmi \
@@ -3402,6 +3418,7 @@ lambda/matching.cmo : \
     typing/typeopt.cmi \
     typing/typedtree.cmi \
     lambda/switch.cmi \
+    utils/semi_thunk.cmi \
     typing/printpat.cmi \
     lambda/printlambda.cmi \
     typing/primitive.cmi \
@@ -3424,6 +3441,7 @@ lambda/matching.cmx : \
     typing/typeopt.cmx \
     typing/typedtree.cmx \
     lambda/switch.cmx \
+    utils/semi_thunk.cmx \
     typing/printpat.cmx \
     lambda/printlambda.cmx \
     typing/primitive.cmx \

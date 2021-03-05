@@ -950,6 +950,21 @@ let transl_type_decl env rec_flag sdecl_list =
   let final_env = add_types_to_env decls env in
   (* Check re-exportation *)
   List.iter2 (check_abbrev final_env) sdecl_list decls;
+  (* Check head shape conflicts *)
+  List.iter (fun (id,_) ->
+    let open Typeopt in
+    let path = Path.Pident id in
+    let descr = Env.find_type_descrs path final_env in
+    try
+      let shape =
+        Head_shape.of_typedescr ~params:[] ~args:[] final_env descr in
+      Format.fprintf Format.err_formatter "SHAPE(%a) %a@."
+        Ident.print id
+        Head_shape.pp shape
+    with Head_shape.Conflict ->
+      Format.fprintf Format.err_formatter "SHAPE(%a) CONFLICT@."
+        Ident.print id
+    ) decls;
   (* Keep original declaration *)
   let final_decls =
     List.map2

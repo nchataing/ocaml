@@ -15,6 +15,19 @@
 
 (* Auxiliaries for type-based optimizations, e.g. array kinds *)
 
+module Head_shape : sig
+  exception Conflict
+  type t = Types.head_shape
+
+  val of_type : Env.t -> Types.type_expr -> t
+
+  val of_typedescr :
+    Env.t -> Env.type_descriptions ->
+    params:(Types.type_expr list) -> args:(Types.type_expr list) -> t
+
+  val pp : Format.formatter -> t -> unit
+end
+
 val is_function_type :
       Env.t -> Types.type_expr -> (Types.type_expr * Types.type_expr) option
 val is_base_type : Env.t -> Types.type_expr -> Path.t -> bool

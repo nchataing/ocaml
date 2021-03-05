@@ -748,7 +748,8 @@ let full_match closing env =  match env with
   match discr.pat_desc with
   | Any -> assert false
   | Construct { cstr_tag = Cstr_extension _ ; _ } -> false
-  | Construct c -> List.length env = c.cstr_consts + c.cstr_nonconsts
+  | Construct c ->
+      List.length env = c.cstr_consts + c.cstr_nonconsts + c.cstr_unboxed
   | Variant { type_row; _ } ->
       let fields =
         List.map
@@ -792,7 +793,7 @@ let should_extend ext env = match ext with
   | (p,_)::_ ->
       let open Patterns.Head in
       begin match p.pat_desc with
-      | Construct {cstr_tag=(Cstr_constant _|Cstr_block _|Cstr_unboxed)} ->
+      | Construct {cstr_tag=(Cstr_constant _|Cstr_block _|Cstr_unboxed _)} ->
           let path = get_constructor_type_path p.pat_type p.pat_env in
           Path.same path ext
       | Construct {cstr_tag=(Cstr_extension _)} -> false
@@ -881,7 +882,7 @@ let build_other_constrs env p =
   match p.pat_desc with
   | Construct ({ cstr_tag = Cstr_extension _ }) -> extra_pat
   | Construct
-      ({ cstr_tag = Cstr_constant _ | Cstr_block _ | Cstr_unboxed } as c) ->
+      ({ cstr_tag = Cstr_constant _ | Cstr_block _ | Cstr_unboxed _ } as c) ->
         let constr = { p with pat_desc = c } in
         let get_constr q =
           match q.pat_desc with
@@ -2003,7 +2004,7 @@ let extendable_path path =
     Path.same path Predef.path_option)
 
 let rec collect_paths_from_pat r p = match p.pat_desc with
-| Tpat_construct(_, {cstr_tag=(Cstr_constant _|Cstr_block _|Cstr_unboxed)},
+| Tpat_construct(_, {cstr_tag=(Cstr_constant _|Cstr_block _|Cstr_unboxed _)},
                  ps, _) ->
     let path = get_constructor_type_path p.pat_type p.pat_env in
     List.fold_left
