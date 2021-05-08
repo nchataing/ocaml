@@ -293,6 +293,13 @@ let unboxed_false_default_true = {unboxed = false; default = true}
 let unboxed_true_default_false = {unboxed = true; default = false}
 let unboxed_true_default_true = {unboxed = true; default = true}
 
+(* type kind bimap *)
+let type_kind_bimap lbl_f cstr_f = function
+  | Type_abstract -> Type_abstract
+  | Type_open -> Type_open
+  | Type_record (lbls, repr) -> Type_record (List.map lbl_f lbls, repr)
+  | Type_variant cstrs -> Type_variant (List.map cstr_f cstrs)
+
 type extension_constructor =
   { ext_type_path: Path.t;
     ext_type_params: type_expr list;

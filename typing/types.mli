@@ -427,6 +427,9 @@ val unboxed_false_default_true : unboxed_status
 val unboxed_true_default_false : unboxed_status
 val unboxed_true_default_true : unboxed_status
 
+val type_kind_bimap : ('l -> 'l2) -> ('c -> 'c2) -> ('l, 'c) type_kind
+                   -> ('l2, 'c2) type_kind
+
 type extension_constructor =
   {
     ext_type_path: Path.t;
