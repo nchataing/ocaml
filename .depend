@@ -157,6 +157,11 @@ utils/profile.cmx : \
     utils/misc.cmx \
     utils/profile.cmi
 utils/profile.cmi :
+utils/semi_thunk.cmo : \
+    utils/semi_thunk.cmi
+utils/semi_thunk.cmx : \
+    utils/semi_thunk.cmi
+utils/semi_thunk.cmi :
 utils/strongly_connected_components.cmo : \
     utils/numbers.cmi \
     utils/misc.cmi \

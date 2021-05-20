@@ -84,6 +84,7 @@ COMPILERLIBS_SOURCES=\
   utils/clflags.ml \
   utils/profile.ml \
   utils/consistbl.ml \
+  utils/semi_thunk.ml \
   utils/terminfo.ml \
   utils/warnings.ml \
   utils/int_replace_polymorphic_compare.ml \
