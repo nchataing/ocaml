@@ -19,10 +19,10 @@ module Head_shape : sig
   exception Conflict
   type t = Types.head_shape
 
-  val of_type : Env.t -> Types.type_expr -> t
+  val of_type : ?detect_cycle:bool -> Env.t -> Types.type_expr -> t
 
   val of_typedescr :
-    Env.t -> Env.type_descriptions ->
+    ?detect_cycle:bool -> Env.t -> Env.type_descriptions ->
     params:(Types.type_expr list) -> args:(Types.type_expr list) -> t
 
   val pp : Format.formatter -> t -> unit

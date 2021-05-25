@@ -109,7 +109,7 @@ module Head_shape = struct
       head_blocks = union hd1.head_blocks hd2.head_blocks
     }
 
-  let rec of_type env ty =
+  let rec of_type ?(detect_cycle=true) env ty =
     let ty = scrape_ty env ty in
     match ty.desc with
     | Tvar _ | Tunivar _ -> any
@@ -140,7 +140,7 @@ module Head_shape = struct
           | exception Not_found -> any
           | descr, decl ->
               let params = decl.type_params in
-              of_typedescr env descr ~params ~args
+              of_typedescr ~detect_cycle env descr ~params ~args
         end
     | Ttuple _ -> block_shape [0]
     | Tarrow _ | Tpackage _ | Tobject _ | Tnil | Tvariant _ ->
@@ -148,7 +148,7 @@ module Head_shape = struct
     | Tlink _ | Tsubst _ | Tpoly _ | Tfield _ ->
         assert false
 
-  and of_typedescr env ty_descr ~params ~args =
+  and of_typedescr ?(detect_cycle=true) env ty_descr ~params ~args =
     (* we called scrape_ty on the type expression in the function above, thus
        it isnt a single constructor unboxed type *)
     match ty_descr with
@@ -170,35 +170,52 @@ module Head_shape = struct
           (fun descr ->
             match descr.cstr_tag with
             | Cstr_constant _ | Cstr_block _ | Cstr_extension _ -> None
-            | Cstr_unboxed head_shape_thunk -> begin
-                let compute_head_shape ty =
-                  (* we instantiate the formal type variables with the
-                     type expression parameters at use site *)
-                  let ty = Ctype.apply env params ty args in
-                  of_type env ty
-                in
-                match Semi_thunk.force compute_head_shape head_shape_thunk with
-                | Ok shape -> Some shape
-                | Error Semi_thunk.Cycle -> raise Conflict
-                end
+            | Cstr_unboxed thunk -> begin
+                if detect_cycle then
+                  let compute_head_shape ty =
+                    (* we instantiate the formal type variables with the
+                       type expression parameters at use site *)
+                    let ty = Ctype.apply env params ty args in
+                    of_type ~detect_cycle env ty
+                  in
+                  match Semi_thunk.force compute_head_shape thunk with
+                  | Ok shape -> Some shape
+                  | Error Semi_thunk.Cycle -> raise Conflict
+              else
+                let ty = Semi_thunk.get_first_arg thunk in
+                let ty = Ctype.apply env params ty args in
+                Some (of_type ~detect_cycle env ty)
+            end
           ) cstr_descrs
         in
         (* now checking that the unboxed constructors are compatible with the
            base head shape of boxed constructors *)
-        List.fold_left disjoint_union boxed_shape unboxed_shapes
+        try
+          List.fold_left disjoint_union boxed_shape unboxed_shapes
+        with Conflict -> begin
+          (* Cycles error have already been raised at this point. We can
+             safely recompute the head shape without cycle detection.
+             It enables to expand more at the call site.
+             TODO : put an example there *)
+          if detect_cycle then
+            of_typedescr ~detect_cycle:false env ty_descr ~params ~args
+          else
+            (* if we are already in the no cycle detection mode, reraise *)
+            raise Conflict
+        end
 
-    let pp_shape ppf = function
-      | Shape_any -> Format.fprintf ppf "Shape_any"
-      | Shape_set l ->
-          Format.fprintf ppf "Shape_set [%a]"
-            (Format.pp_print_list
-              ~pp_sep:(fun ppf () -> Format.fprintf ppf "; ")
-              Format.pp_print_int) l
+  let pp_shape ppf = function
+    | Shape_any -> Format.fprintf ppf "Shape_any"
+    | Shape_set l ->
+        Format.fprintf ppf "Shape_set [%a]"
+          (Format.pp_print_list
+            ~pp_sep:(fun ppf () -> Format.fprintf ppf "; ")
+            Format.pp_print_int) l
 
-    let pp ppf {head_imm; head_blocks} =
-      Format.fprintf ppf "{head_imm = %a; head_blocks = %a}"
-        pp_shape head_imm
-        pp_shape head_blocks
+  let pp ppf {head_imm; head_blocks} =
+    Format.fprintf ppf "{head_imm = %a; head_blocks = %a}"
+      pp_shape head_imm
+      pp_shape head_blocks
 end
 
 let classify env ty =
