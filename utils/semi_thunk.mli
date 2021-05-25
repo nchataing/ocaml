@@ -17,6 +17,8 @@ type ('a, 'b) t
 
 val make : 'a -> ('a, 'b) t
 
+val get_first_arg : ('a, 'b) t -> 'a
+
 type cycle = Cycle
 
 val force : ('a -> 'b) -> ('a, 'b) t -> ('b, cycle) result
