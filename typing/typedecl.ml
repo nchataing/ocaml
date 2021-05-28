@@ -952,7 +952,6 @@ let transl_type_decl env rec_flag sdecl_list =
   List.iter2 (check_abbrev final_env) sdecl_list decls;
   (* Check head shape conflicts *)
   List.iter (fun (id,_) ->
-    let open Typeopt in
     let path = Path.Pident id in
     let descr = Env.find_type_descrs path final_env in
     try

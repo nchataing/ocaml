@@ -658,6 +658,29 @@ typing/errortrace.cmi : \
     typing/types.cmi \
     typing/path.cmi \
     parsing/asttypes.cmi
+typing/head_shape.cmo : \
+    typing/types.cmi \
+    typing/typedecl_unboxed.cmi \
+    utils/semi_thunk.cmi \
+    typing/predef.cmi \
+    typing/path.cmi \
+    typing/env.cmi \
+    typing/ctype.cmi \
+    utils/config.cmi \
+    typing/head_shape.cmi
+typing/head_shape.cmx : \
+    typing/types.cmx \
+    typing/typedecl_unboxed.cmx \
+    utils/semi_thunk.cmx \
+    typing/predef.cmx \
+    typing/path.cmx \
+    typing/env.cmx \
+    typing/ctype.cmx \
+    utils/config.cmx \
+    typing/head_shape.cmi
+typing/head_shape.cmi : \
+    typing/types.cmi \
+    typing/env.cmi
 typing/ident.cmo : \
     utils/misc.cmi \
     utils/local_store.cmi \
@@ -1384,7 +1407,6 @@ typing/typedecl.cmo : \
     utils/warnings.cmi \
     typing/typetexp.cmi \
     typing/types.cmi \
-    typing/typeopt.cmi \
     typing/typedtree.cmi \
     typing/typedecl_variance.cmi \
     typing/typedecl_unboxed.cmi \
@@ -1404,6 +1426,7 @@ typing/typedecl.cmo : \
     parsing/location.cmi \
     typing/includecore.cmi \
     typing/ident.cmi \
+    typing/head_shape.cmi \
     typing/errortrace.cmi \
     typing/env.cmi \
     typing/ctype.cmi \
@@ -1420,7 +1443,6 @@ typing/typedecl.cmx : \
     utils/warnings.cmx \
     typing/typetexp.cmx \
     typing/types.cmx \
-    typing/typeopt.cmx \
     typing/typedtree.cmx \
     typing/typedecl_variance.cmx \
     typing/typedecl_unboxed.cmx \
@@ -1440,6 +1462,7 @@ typing/typedecl.cmx : \
     parsing/location.cmx \
     typing/includecore.cmx \
     typing/ident.cmx \
+    typing/head_shape.cmx \
     typing/errortrace.cmx \
     typing/env.cmx \
     typing/ctype.cmx \
@@ -1694,7 +1717,6 @@ typing/typeopt.cmo : \
     typing/types.cmi \
     typing/typedtree.cmi \
     typing/typedecl_unboxed.cmi \
-    utils/semi_thunk.cmi \
     typing/predef.cmi \
     typing/path.cmi \
     lambda/lambda.cmi \
@@ -1708,7 +1730,6 @@ typing/typeopt.cmx : \
     typing/types.cmx \
     typing/typedtree.cmx \
     typing/typedecl_unboxed.cmx \
-    utils/semi_thunk.cmx \
     typing/predef.cmx \
     typing/path.cmx \
     lambda/lambda.cmx \

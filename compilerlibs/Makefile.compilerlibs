@@ -113,6 +113,7 @@ TYPING = \
   typing/typedecl_immediacy.cmo \
   typing/typedecl_separability.cmo \
   typing/typeopt.cmo \
+  typing/head_shape.cmo \
   typing/typedecl.cmo \
   typing/rec_check.cmo \
   typing/typecore.cmo \
