@@ -729,6 +729,29 @@ typing/errortrace.cmi : \
     typing/types.cmi \
     typing/path.cmi \
     parsing/asttypes.cmi
+typing/head_shape.cmo : \
+    typing/types.cmi \
+    typing/typedecl_unboxed.cmi \
+    utils/semi_thunk.cmi \
+    typing/predef.cmi \
+    typing/path.cmi \
+    typing/env.cmi \
+    typing/ctype.cmi \
+    utils/config.cmi \
+    typing/head_shape.cmi
+typing/head_shape.cmx : \
+    typing/types.cmx \
+    typing/typedecl_unboxed.cmx \
+    utils/semi_thunk.cmx \
+    typing/predef.cmx \
+    typing/path.cmx \
+    typing/env.cmx \
+    typing/ctype.cmx \
+    utils/config.cmx \
+    typing/head_shape.cmi
+typing/head_shape.cmi : \
+    typing/types.cmi \
+    typing/env.cmi
 typing/ident.cmo : \
     utils/misc.cmi \
     utils/local_store.cmi \
@@ -1513,6 +1536,7 @@ typing/typedecl.cmo : \
     lambda/lambda.cmi \
     typing/includecore.cmi \
     typing/ident.cmi \
+    typing/head_shape.cmi \
     typing/errortrace.cmi \
     typing/env.cmi \
     typing/ctype.cmi \
@@ -1550,6 +1574,7 @@ typing/typedecl.cmx : \
     lambda/lambda.cmx \
     typing/includecore.cmx \
     typing/ident.cmx \
+    typing/head_shape.cmx \
     typing/errortrace.cmx \
     typing/env.cmx \
     typing/ctype.cmx \
@@ -1813,7 +1838,6 @@ typing/typeopt.cmo : \
     typing/typedtree.cmi \
     typing/typedecl_unboxed.cmi \
     typing/type_immediacy.cmi \
-    utils/semi_thunk.cmi \
     typing/predef.cmi \
     typing/path.cmi \
     lambda/lambda.cmi \
@@ -1829,7 +1853,6 @@ typing/typeopt.cmx : \
     typing/typedtree.cmx \
     typing/typedecl_unboxed.cmx \
     typing/type_immediacy.cmx \
-    utils/semi_thunk.cmx \
     typing/predef.cmx \
     typing/path.cmx \
     lambda/lambda.cmx \
@@ -3672,6 +3695,7 @@ lambda/matching.cmo : \
     typing/typeopt.cmi \
     typing/typedtree.cmi \
     lambda/switch.cmi \
+    utils/semi_thunk.cmi \
     typing/printpat.cmi \
     lambda/printlambda.cmi \
     typing/primitive.cmi \
@@ -3694,6 +3718,7 @@ lambda/matching.cmx : \
     typing/typeopt.cmx \
     typing/typedtree.cmx \
     lambda/switch.cmx \
+    utils/semi_thunk.cmx \
     typing/printpat.cmx \
     lambda/printlambda.cmx \
     typing/primitive.cmx \
