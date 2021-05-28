@@ -84,7 +84,7 @@ COMPILERLIBS_SOURCES=\
   utils/clflags.ml \
   utils/profile.ml \
   utils/consistbl.ml \
-  utils/semi_thunk.ml \
+  utils/delayed.ml \
   utils/terminfo.ml \
   utils/warnings.ml \
   utils/int_replace_polymorphic_compare.ml \
@@ -112,6 +112,7 @@ COMPILERLIBS_SOURCES=\
   typing/subst.ml \
   typing/predef.ml \
   typing/datarepr.ml \
+  typing/head_shape.ml \
   file_formats/cmi_format.ml \
   typing/persistent_env.ml \
   typing/env.ml \

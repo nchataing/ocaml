@@ -82,7 +82,7 @@ utils_SOURCES = $(addprefix utils/, \
   lazy_backtrack.mli lazy_backtrack.ml \
   diffing.mli diffing.ml \
   diffing_with_keys.mli diffing_with_keys.ml \
-  semi_thunk.mli semi_thunk.ml)
+  delayed.mli delayed.ml)
 
 parsing_SOURCES = $(addprefix parsing/, \
   location.mli location.ml \

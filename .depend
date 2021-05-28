@@ -74,6 +74,11 @@ utils/consistbl.cmx : \
     utils/consistbl.cmi
 utils/consistbl.cmi : \
     utils/misc.cmi
+utils/delayed.cmo : \
+    utils/delayed.cmi
+utils/delayed.cmx : \
+    utils/delayed.cmi
+utils/delayed.cmi :
 utils/diffing.cmo : \
     utils/misc.cmi \
     utils/diffing.cmi
@@ -157,11 +162,6 @@ utils/profile.cmx : \
     utils/misc.cmx \
     utils/profile.cmi
 utils/profile.cmi :
-utils/semi_thunk.cmo : \
-    utils/semi_thunk.cmi
-utils/semi_thunk.cmx : \
-    utils/semi_thunk.cmi
-utils/semi_thunk.cmi :
 utils/strongly_connected_components.cmo : \
     utils/numbers.cmi \
     utils/misc.cmi \
@@ -609,20 +609,20 @@ typing/ctype.cmi : \
     parsing/asttypes.cmi
 typing/datarepr.cmo : \
     typing/types.cmi \
-    utils/semi_thunk.cmi \
     typing/path.cmi \
     parsing/location.cmi \
     typing/ident.cmi \
+    utils/delayed.cmi \
     parsing/builtin_attributes.cmi \
     typing/btype.cmi \
     parsing/asttypes.cmi \
     typing/datarepr.cmi
 typing/datarepr.cmx : \
     typing/types.cmx \
-    utils/semi_thunk.cmx \
     typing/path.cmx \
     parsing/location.cmx \
     typing/ident.cmx \
+    utils/delayed.cmx \
     parsing/builtin_attributes.cmx \
     typing/btype.cmx \
     parsing/asttypes.cmi \
@@ -732,20 +732,20 @@ typing/errortrace.cmi : \
 typing/head_shape.cmo : \
     typing/types.cmi \
     typing/typedecl_unboxed.cmi \
-    utils/semi_thunk.cmi \
     typing/predef.cmi \
     typing/path.cmi \
     typing/env.cmi \
+    utils/delayed.cmi \
     typing/ctype.cmi \
     utils/config.cmi \
     typing/head_shape.cmi
 typing/head_shape.cmx : \
     typing/types.cmx \
     typing/typedecl_unboxed.cmx \
-    utils/semi_thunk.cmx \
     typing/predef.cmx \
     typing/path.cmx \
     typing/env.cmx \
+    utils/delayed.cmx \
     typing/ctype.cmx \
     utils/config.cmx \
     typing/head_shape.cmi
@@ -1872,7 +1872,6 @@ typing/typeopt.cmi : \
 typing/types.cmo : \
     typing/type_immediacy.cmi \
     typing/shape.cmi \
-    utils/semi_thunk.cmi \
     typing/primitive.cmi \
     typing/path.cmi \
     parsing/parsetree.cmi \
@@ -1881,13 +1880,13 @@ typing/types.cmo : \
     parsing/location.cmi \
     utils/local_store.cmi \
     typing/ident.cmi \
+    utils/delayed.cmi \
     utils/config.cmi \
     parsing/asttypes.cmi \
     typing/types.cmi
 typing/types.cmx : \
     typing/type_immediacy.cmx \
     typing/shape.cmx \
-    utils/semi_thunk.cmx \
     typing/primitive.cmx \
     typing/path.cmx \
     parsing/parsetree.cmi \
@@ -1896,19 +1895,20 @@ typing/types.cmx : \
     parsing/location.cmx \
     utils/local_store.cmx \
     typing/ident.cmx \
+    utils/delayed.cmx \
     utils/config.cmx \
     parsing/asttypes.cmi \
     typing/types.cmi
 typing/types.cmi : \
     typing/type_immediacy.cmi \
     typing/shape.cmi \
-    utils/semi_thunk.cmi \
     typing/primitive.cmi \
     typing/path.cmi \
     parsing/parsetree.cmi \
     parsing/longident.cmi \
     parsing/location.cmi \
     typing/ident.cmi \
+    utils/delayed.cmi \
     parsing/asttypes.cmi
 typing/typetexp.cmo : \
     typing/types.cmi \
@@ -3695,7 +3695,6 @@ lambda/matching.cmo : \
     typing/typeopt.cmi \
     typing/typedtree.cmi \
     lambda/switch.cmi \
-    utils/semi_thunk.cmi \
     typing/printpat.cmi \
     lambda/printlambda.cmi \
     typing/primitive.cmi \
@@ -3708,6 +3707,7 @@ lambda/matching.cmo : \
     lambda/lambda.cmi \
     typing/ident.cmi \
     typing/env.cmi \
+    utils/delayed.cmi \
     lambda/debuginfo.cmi \
     utils/clflags.cmi \
     typing/btype.cmi \
@@ -3718,7 +3718,6 @@ lambda/matching.cmx : \
     typing/typeopt.cmx \
     typing/typedtree.cmx \
     lambda/switch.cmx \
-    utils/semi_thunk.cmx \
     typing/printpat.cmx \
     lambda/printlambda.cmx \
     typing/primitive.cmx \
@@ -3731,6 +3730,7 @@ lambda/matching.cmx : \
     lambda/lambda.cmx \
     typing/ident.cmx \
     typing/env.cmx \
+    utils/delayed.cmx \
     lambda/debuginfo.cmx \
     utils/clflags.cmx \
     typing/btype.cmx \
