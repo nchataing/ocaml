@@ -839,6 +839,10 @@ let mk_dinterval f =
   "-dinterval", Arg.Unit f, " (undocumented)"
 ;;
 
+let mk_dheadshape f =
+  "-dheadshape", Arg.Unit f, " (undocumented)"
+;;
+
 let mk_dstartup f =
   "-dstartup", Arg.Unit f, " (undocumented)"
 ;;
@@ -945,6 +949,7 @@ module type Core_options = sig
   val _dtypedtree : unit -> unit
   val _drawlambda : unit -> unit
   val _dlambda : unit -> unit
+  val _dheadshape : unit -> unit
 
 end
 
@@ -1238,6 +1243,7 @@ struct
     mk_dparsetree F._dparsetree;
     mk_dtypedtree F._dtypedtree;
     mk_drawlambda F._drawlambda;
+    mk_dheadshape F._dheadshape;
     mk_dlambda F._dlambda;
     mk_dinstr F._dinstr;
     mk_dcamlprimc F._dcamlprimc;
@@ -1304,6 +1310,7 @@ struct
     mk_dsource F._dsource;
     mk_dparsetree F._dparsetree;
     mk_dtypedtree F._dtypedtree;
+    mk_dheadshape F._dheadshape;
     mk_drawlambda F._drawlambda;
     mk_dlambda F._dlambda;
     mk_dinstr F._dinstr;
@@ -1434,6 +1441,7 @@ struct
     mk_dsource F._dsource;
     mk_dparsetree F._dparsetree;
     mk_dtypedtree F._dtypedtree;
+    mk_dheadshape F._dheadshape;
     mk_drawlambda F._drawlambda;
     mk_dlambda F._dlambda;
     mk_drawclambda F._drawclambda;
@@ -1544,6 +1552,7 @@ module Make_opttop_options (F : Opttop_options) = struct
     mk_dsource F._dsource;
     mk_dparsetree F._dparsetree;
     mk_dtypedtree F._dtypedtree;
+    mk_dheadshape F._dheadshape;
     mk_drawlambda F._drawlambda;
     mk_drawclambda F._drawclambda;
     mk_dclambda F._dclambda;
@@ -1707,6 +1716,7 @@ module Default = struct
     let _drawlambda = set dump_rawlambda
     let _dsource = set dump_source
     let _dtypedtree = set dump_typedtree
+    let _dheadshape = set dump_headshape
     let _dunique_ids = set unique_ids
     let _dno_unique_ids = clear unique_ids
     let _dlocations = set locations
@@ -1739,6 +1749,7 @@ module Default = struct
     let _dflambda_verbose () =
       set dump_flambda (); set dump_flambda_verbose ()
     let _dinterval = set dump_interval
+    let _dheadshape = set dump_headshape
     let _dinterf = set dump_interf
     let _dlinear = set dump_linear
     let _dlive () = dump_live := true

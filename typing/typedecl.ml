@@ -957,12 +957,14 @@ let transl_type_decl env rec_flag sdecl_list =
     try
       let shape =
         Head_shape.of_typedescr ~params:[] ~args:[] final_env descr in
-      Format.fprintf Format.err_formatter "SHAPE(%a) %a@."
-        Ident.print id
-        Head_shape.pp shape
+      if !Clflags.dump_headshape then
+        Format.fprintf Format.err_formatter "SHAPE(%a) %a@."
+          Ident.print id
+          Head_shape.pp shape
     with Head_shape.Conflict ->
-      Format.fprintf Format.err_formatter "SHAPE(%a) CONFLICT@."
-        Ident.print id
+      if !Clflags.dump_headshape then
+        Format.fprintf Format.err_formatter "SHAPE(%a) CONFLICT@."
+          Ident.print id
     ) decls;
   (* Keep original declaration *)
   let final_decls =
