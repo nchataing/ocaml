@@ -2778,8 +2778,8 @@ let split_cases tag_lambda_list =
         match cstr_tag with
         | Cstr_constant n -> Cases.add_const n act cases
         | Cstr_block n -> Cases.add_nonconst n act cases
-        | Cstr_unboxed head_shape ->
-            let head_shape = Semi_thunk.get head_shape in
+        | Cstr_unboxed (_, head_shape) ->
+            let head_shape = Delayed.get head_shape in
             let cases =
               match head_shape.head_imm with
               | Shape_set s ->

@@ -135,16 +135,16 @@ and of_typedescr env ty_descr ~params ~args =
         (fun descr ->
           match descr.cstr_tag with
           | Cstr_constant _ | Cstr_block _ | Cstr_extension _ -> None
-          | Cstr_unboxed thunk -> begin
-              let compute_head_shape ty =
+          | Cstr_unboxed (ty, thunk) -> begin
+              let compute_head_shape () =
                 (* we instantiate the formal type variables with the
                    type expression parameters at use site *)
                 let ty = Ctype.apply env params ty args in
                 of_type env ty
               in
-              match Semi_thunk.force compute_head_shape thunk with
+              match Delayed.force compute_head_shape thunk with
               | Ok shape -> Some shape
-              | Error Semi_thunk.Cycle -> raise Conflict
+              | Error Delayed.Cycle -> raise Conflict
             end
         ) cstr_descrs
       in

@@ -13,15 +13,13 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type ('a, 'b) t
+type 'a t
 
-val make : 'a -> ('a, 'b) t
-
-val get_first_arg : ('a, 'b) t -> 'a
+val make : unit -> 'a t
 
 type cycle = Cycle
 
-val force : ('a -> 'b) -> ('a, 'b) t -> ('b, cycle) result
+val force : (unit -> 'a) -> 'a t -> ('a, cycle) result
 
 (* force must have been called first and succeeded *)
-val get : ('a, 'b) t -> 'b
+val get : 'a t -> 'a

@@ -13,30 +13,28 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type 'b state =
+type 'a state =
   | Todo
   | In_progress
-  | Done of 'b
+  | Done of 'a
 
-type ('a, 'b) t = 'b state ref * 'a
+type 'a t = 'a state ref
 
-let make x = ref Todo, x
-
-let get_first_arg (_,x) = x
+let make () = ref Todo
 
 type cycle = Cycle
 
-let force f (st,x) = match !st with
+let force f st = match !st with
  | In_progress -> Error Cycle
  | Done v -> Ok v
  | Todo ->
      begin
        st := In_progress;
-       let v = f x in
+       let v = f () in
        st := Done v;
        Ok v
      end
 
-let get (st,_) = match !st with
+let get st = match !st with
   | Todo | In_progress -> invalid_arg "Semi_thunk.get"
   | Done v -> v
