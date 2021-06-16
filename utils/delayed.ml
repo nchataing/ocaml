@@ -36,5 +36,5 @@ let force f st = match !st with
      end
 
 let get st = match !st with
-  | Todo | In_progress -> invalid_arg "Semi_thunk.get"
+  | Todo | In_progress -> invalid_arg "Delayed.get"
   | Done v -> v

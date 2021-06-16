@@ -2778,8 +2778,9 @@ let split_cases tag_lambda_list =
         match cstr_tag with
         | Cstr_constant n -> Cases.add_const n act cases
         | Cstr_block n -> Cases.add_nonconst n act cases
-        | Cstr_unboxed (_, head_shape) ->
-            let head_shape = Delayed.get head_shape in
+        | Cstr_unboxed (ty, head_shape) ->
+            failwith "TODO"
+            (*
             let cases =
               match head_shape.head_imm with
               | Shape_set s ->
@@ -2796,6 +2797,7 @@ let split_cases tag_lambda_list =
                     cases s
               | Shape_any -> Cases.add_any_nonconst act cases
             in cases
+            *)
         | Cstr_extension _ -> assert false
       )
   in

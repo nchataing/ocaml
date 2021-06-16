@@ -117,7 +117,7 @@ let constructor_descrs ~current_unit ty_path decl cstrs rep =
         let (tag, descr_rem) =
           match cd_args with
           | Cstr_tuple [ty] when Builtin_attributes.has_unboxed cd_attributes ->
-              (Cstr_unboxed (ty, Delayed.make ()),
+              (Cstr_unboxed ty,
                describe_constructors idx_const idx_nonconst rem)
           (* TODO : add case for single field inlined record *)
           (* | Cstr_record [{ld_type; _}] -> ld_type *)

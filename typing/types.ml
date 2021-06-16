@@ -422,8 +422,7 @@ type constructor_description =
 and constructor_tag =
     Cstr_constant of int                  (* Constant constructor (an int) *)
   | Cstr_block of int                     (* Regular constructor (a block) *)
-  | Cstr_unboxed of type_expr * head_shape Delayed.t
-                                          (* Constructor of an unboxed type *)
+  | Cstr_unboxed of type_expr             (* Constructor of an unboxed type *)
   | Cstr_extension of Path.t * bool       (* Extension constructor : true if a
                                              constant false if a block *)
 
@@ -444,7 +443,7 @@ let equal_tag t1 t2 =
   match (t1, t2) with
   | Cstr_constant i1, Cstr_constant i2 -> i2 = i1
   | Cstr_block i1, Cstr_block i2 -> i2 = i1
-  | Cstr_unboxed (_,hd1), Cstr_unboxed (_,hd2) -> hd1 = hd2
+  | Cstr_unboxed ty1, Cstr_unboxed ty2 -> ty1 = ty2
       (* Possible tags of different unboxed constructors are disjoint.
          `equal_tag t1 t2` is equivalent to equality of constructors. *)
   | Cstr_extension (path1, b1), Cstr_extension (path2, b2) ->

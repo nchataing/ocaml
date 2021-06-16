@@ -73,7 +73,8 @@ let disjoint_union hd1 hd2 =
     head_blocks = union hd1.head_blocks hd2.head_blocks
   }
 
-let rec of_type env ty =
+let rec of_type env ty callstacks =
+  let callstack = Btype.TypeMap.find ty callstacks in
   let ty = scrape_ty env ty in
   match ty.desc with
   | Tvar _ | Tunivar _ -> any
@@ -99,12 +100,14 @@ let rec of_type env ty =
            || Path.same p Predef.path_int32
            || Path.same p Predef.path_int64 then
         block_shape [Obj.custom_tag]
+      else if List.exists (Path.same p) callstack then
+        invalid_arg "Head_shape.of_type"
       else begin
         match Env.find_type_descrs p env, Env.find_type p env with
         | exception Not_found -> any
         | descr, decl ->
             let params = decl.type_params in
-            of_typedescr env descr ~params ~args
+            of_typedescr env descr ~params ~args callstacks
       end
   | Ttuple _ -> block_shape [0]
   | Tarrow _ | Tpackage _ | Tobject _ | Tnil | Tvariant _ ->
@@ -113,7 +116,7 @@ let rec of_type env ty =
       assert false
 
 
-and of_typedescr env ty_descr ~params ~args =
+and of_typedescr env ty_descr ~params ~args callstacks =
   (* we called scrape_ty on the type expression in the function above, thus
      it isnt a single constructor unboxed type *)
   match ty_descr with
@@ -135,17 +138,12 @@ and of_typedescr env ty_descr ~params ~args =
         (fun descr ->
           match descr.cstr_tag with
           | Cstr_constant _ | Cstr_block _ | Cstr_extension _ -> None
-          | Cstr_unboxed (ty, thunk) -> begin
-              let compute_head_shape () =
-                (* we instantiate the formal type variables with the
-                   type expression parameters at use site *)
-                let ty = Ctype.apply env params ty args in
-                of_type env ty
-              in
-              match Delayed.force compute_head_shape thunk with
-              | Ok shape -> Some shape
-              | Error Delayed.Cycle -> raise Conflict
-            end
+          | Cstr_unboxed ty ->
+              (* we instantiate the formal type variables with the
+                 type expression parameters at use site *)
+              let ty = Ctype.apply env params ty args in
+              (* TODO : update the callstack *)
+              Some (of_type env ty callstacks)
         ) cstr_descrs
       in
       (* now checking that the unboxed constructors are compatible with the
